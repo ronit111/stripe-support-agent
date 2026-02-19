@@ -105,7 +105,7 @@ def build():
     # Delete existing collection if it exists
     try:
         client.delete_collection(COLLECTION_NAME)
-    except ValueError:
+    except Exception:
         pass
 
     ef = DefaultEmbeddingFunction()
