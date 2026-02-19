@@ -14,19 +14,27 @@ An AI-powered customer support assistant that answers questions about Stripe usi
 
 ## Architecture
 
-```
-┌─────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│  User        │────▶│  Semantic Search  │────▶│  LLM Generation │
-│  Question    │     │  (ChromaDB)       │     │  (Groq + Llama) │
-└─────────────┘     └──────────────────┘     └─────────────────┘
-                           │                          │
-                    Retrieves top 4              Generates answer
-                    relevant chunks              grounded in context
-                           │                          │
-                    ┌──────▼──────┐            ┌──────▼──────┐
-                    │ Stripe Docs  │            │  Response +  │
-                    │ (25 pages)   │            │  Citations   │
-                    └─────────────┘            └─────────────┘
+```mermaid
+flowchart LR
+    A["User Question"] --> B["Streamlit UI"]
+    B --> C["LangChain\nRAG Pipeline"]
+    C --> D["ChromaDB\n345 chunks"]
+    D -->|"Top 4 chunks"| C
+    C --> E["Groq API\nLlama 3.3 70B"]
+    E -->|"Streamed response"| B
+    B --> F["Response +\nSource Citations"]
+
+    G["Stripe Docs\n25 pages"] -->|"Build step"| H["Chunking +\nEmbedding"]
+    H -->|"all-MiniLM-L6-v2"| D
+
+    style A fill:#635BFF,stroke:#635BFF,color:#fff
+    style B fill:#1A2742,stroke:#635BFF,color:#E8E8E8
+    style C fill:#1A2742,stroke:#635BFF,color:#E8E8E8
+    style D fill:#1A2742,stroke:#80E9FF,color:#E8E8E8
+    style E fill:#1A2742,stroke:#80E9FF,color:#E8E8E8
+    style F fill:#635BFF,stroke:#635BFF,color:#fff
+    style G fill:#0A1628,stroke:#2A3752,color:#8892A6
+    style H fill:#0A1628,stroke:#2A3752,color:#8892A6
 ```
 
 **How it works:**

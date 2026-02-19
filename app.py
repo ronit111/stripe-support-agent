@@ -365,17 +365,17 @@ def handle_question(question: str):
         try:
             result = ask(question, st.session_state.messages[:-1])
             response_text = st.write_stream(result["answer"])
-            elapsed = time.time() - (time.time() - result["response_time"])
+            total_time = time.time() - result["start_time"]
 
             if result["sources"]:
                 render_sources(result["sources"])
-            render_response_meta(result["response_time"])
+            render_response_meta(total_time)
 
             st.session_state.messages.append({
                 "role": "assistant",
                 "content": response_text,
                 "sources": result["sources"],
-                "response_time": result["response_time"],
+                "response_time": total_time,
             })
 
         except Exception as e:

@@ -56,8 +56,11 @@ def ask(question: str, chat_history: list[dict] | None = None) -> dict:
             if chunk.content:
                 yield chunk.content
 
+    retrieval_time = time.time() - start
+
     return {
         "answer": stream_response(),
         "sources": sources,
-        "response_time": time.time() - start,
+        "retrieval_time": retrieval_time,
+        "start_time": start,
     }
