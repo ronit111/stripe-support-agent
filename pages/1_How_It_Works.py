@@ -9,138 +9,153 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
+
+    html, body, [class*="css"] {
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
     .stApp {
-        border-top: 3px solid transparent;
-        border-image: linear-gradient(90deg, #635BFF, #80E9FF, #635BFF) 1;
+        border-top: 3px solid #635BFF;
+    }
+
+    .stMainBlockContainer {
+        max-width: 960px;
+        padding-top: 2rem;
     }
 
     .section-title {
-        font-size: 1.5rem;
+        font-size: 1.35rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #635BFF, #80E9FF);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #0A2540;
         margin-bottom: 1rem;
+        letter-spacing: -0.01em;
     }
 
     .arch-diagram {
-        background: rgba(26, 39, 66, 0.5);
-        border: 1px solid rgba(99, 91, 255, 0.2);
-        border-radius: 12px;
+        background: #F6F9FC;
+        border: 1px solid #E3E8EE;
+        border-radius: 10px;
         padding: 1.5rem;
         margin: 1rem 0;
-        font-family: 'Courier New', monospace;
-        font-size: 0.85rem;
+        font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+        font-size: 0.82rem;
         line-height: 1.6;
         overflow-x: auto;
     }
 
     .pipeline-card {
-        background: linear-gradient(135deg, rgba(26, 39, 66, 0.8), rgba(26, 39, 66, 0.5));
-        border: 1px solid rgba(99, 91, 255, 0.15);
-        border-radius: 12px;
+        background: #FFFFFF;
+        border: 1px solid #E3E8EE;
+        border-radius: 10px;
         padding: 1.5rem;
         height: 100%;
         transition: border-color 0.2s ease;
     }
     .pipeline-card:hover {
-        border-color: rgba(99, 91, 255, 0.4);
+        border-color: #635BFF;
     }
     .pipeline-num {
-        background: linear-gradient(135deg, #635BFF, #80E9FF);
-        color: #0A1628;
-        width: 32px;
-        height: 32px;
+        background: #635BFF;
+        color: #FFFFFF;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         margin-bottom: 0.75rem;
     }
     .pipeline-title {
-        color: #E8E8E8;
+        color: #0A2540;
         font-weight: 600;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         margin-bottom: 0.5rem;
     }
     .pipeline-desc {
-        color: #8892A6;
+        color: #425466;
         font-size: 0.88rem;
-        line-height: 1.6;
+        line-height: 1.65;
     }
 
     .tech-row {
         display: flex;
         align-items: center;
         padding: 0.75rem 0;
-        border-bottom: 1px solid rgba(99, 91, 255, 0.08);
+        border-bottom: 1px solid #E3E8EE;
     }
     .tech-row:last-child {
         border-bottom: none;
     }
     .tech-name {
-        color: #635BFF;
+        color: #0A2540;
         font-weight: 600;
-        font-size: 0.9rem;
-        width: 200px;
+        font-size: 0.88rem;
+        width: 180px;
         flex-shrink: 0;
     }
     .tech-detail {
-        color: #C0C8D8;
+        color: #425466;
         font-size: 0.85rem;
         flex: 1;
     }
     .tech-why {
-        color: #8892A6;
+        color: #8898AA;
         font-size: 0.8rem;
         flex: 1;
         font-style: italic;
     }
 
     .decision-card {
-        background: rgba(26, 39, 66, 0.4);
+        background: #FFFFFF;
+        border: 1px solid #E3E8EE;
         border-left: 3px solid #635BFF;
         border-radius: 0 8px 8px 0;
         padding: 1rem 1.25rem;
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
+        transition: border-left-color 0.2s ease;
+    }
+    .decision-card:hover {
+        border-left-color: #0A2540;
     }
     .decision-title {
-        color: #E8E8E8;
+        color: #0A2540;
         font-weight: 600;
-        font-size: 0.95rem;
-        margin-bottom: 0.35rem;
+        font-size: 0.92rem;
+        margin-bottom: 0.3rem;
     }
     .decision-desc {
-        color: #8892A6;
+        color: #425466;
         font-size: 0.85rem;
         line-height: 1.6;
     }
 
     .cta-section {
-        background: linear-gradient(135deg, rgba(99, 91, 255, 0.12), rgba(128, 233, 255, 0.06));
-        border: 1px solid rgba(99, 91, 255, 0.25);
-        border-radius: 16px;
+        background: #F6F9FC;
+        border: 1px solid #E3E8EE;
+        border-radius: 12px;
         padding: 2rem;
         text-align: center;
         margin-top: 1rem;
     }
     .cta-title {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
         font-weight: 700;
-        color: #E8E8E8;
-        margin-bottom: 0.5rem;
+        color: #0A2540;
+        margin-bottom: 0.4rem;
+        letter-spacing: -0.01em;
     }
     .cta-desc {
-        color: #8892A6;
-        font-size: 0.95rem;
-        max-width: 600px;
-        margin: 0 auto 1.5rem auto;
+        color: #425466;
+        font-size: 0.92rem;
+        max-width: 560px;
+        margin: 0 auto 1.25rem auto;
         line-height: 1.6;
     }
 
@@ -149,17 +164,29 @@ st.markdown("""
         padding: 1rem;
     }
     .stat-num {
-        font-size: 2rem;
+        font-size: 1.8rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #635BFF, #80E9FF);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #0A2540;
+        letter-spacing: -0.02em;
     }
     .stat-label {
-        color: #8892A6;
-        font-size: 0.8rem;
-        margin-top: 0.25rem;
+        color: #8898AA;
+        font-size: 0.78rem;
+        margin-top: 0.2rem;
+        font-weight: 500;
+    }
+
+    /* Links */
+    a { color: #635BFF !important; text-decoration: none !important; }
+    a:hover { color: #0A2540 !important; }
+
+    /* Dividers */
+    hr { border-color: #E3E8EE !important; }
+
+    /* Sidebar */
+    section[data-testid="stSidebar"] {
+        background-color: #F6F9FC;
+        border-right: 1px solid #E3E8EE;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -186,7 +213,7 @@ st.markdown('<div class="section-title">Architecture</div>', unsafe_allow_html=T
 
 st.markdown("""
 <div class="arch-diagram">
-<pre style="color: #C0C8D8; margin: 0;">
+<pre style="color: #425466; margin: 0;">
   User Question
        │
        ▼
@@ -200,7 +227,7 @@ st.markdown("""
   │           <span style="color: #635BFF; font-weight: 600;">LangChain RAG Pipeline</span>                │
   │                                                 │
   │  ┌──────────────┐     ┌──────────────────────┐  │
-  │  │  <span style="color: #80E9FF;">ChromaDB</span>     │     │  <span style="color: #80E9FF;">Groq API</span>            │  │
+  │  │  <span style="color: #0A2540; font-weight: 600;">ChromaDB</span>     │     │  <span style="color: #0A2540; font-weight: 600;">Groq API</span>            │  │
   │  │  Vector Store │────▶│  Llama 3.3 70B       │  │
   │  │  (345 chunks) │     │  (streaming)          │  │
   │  └──────┬───────┘     └──────────┬───────────┘  │
@@ -272,7 +299,7 @@ tech_items = [
     ("Embeddings", "all-MiniLM-L6-v2 (ONNX)", "Lightweight (~80MB), runs on CPU, no GPU required"),
     ("Vector Database", "ChromaDB (persistent)", "Zero infrastructure, pre-computed embeddings load from disk"),
     ("Framework", "LangChain", "Industry-standard RAG orchestration with provider flexibility"),
-    ("UI", "Streamlit", "Clean chat interface with custom dark theme"),
+    ("UI", "Streamlit", "Clean chat interface with custom theme"),
     ("Knowledge Base", "25 curated Stripe pages", "Covers payments, billing, disputes, webhooks, and more"),
 ]
 

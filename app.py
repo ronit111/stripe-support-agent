@@ -14,160 +14,193 @@ st.set_page_config(
 
 provider = get_provider_info()
 
-# --- Custom CSS ---
+# --- Custom CSS: Stripe-inspired light theme ---
 st.markdown("""
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
     /* Hide default Streamlit chrome */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
 
-    /* Top gradient accent bar */
-    .stApp {
-        border-top: 3px solid transparent;
-        border-image: linear-gradient(90deg, #635BFF, #80E9FF, #635BFF) 1;
+    /* Global typography */
+    html, body, [class*="css"] {
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* Hero title gradient */
+    /* Top accent bar — thin, elegant */
+    .stApp {
+        border-top: 3px solid #635BFF;
+    }
+
+    /* Main container breathing room */
+    .stMainBlockContainer {
+        max-width: 820px;
+        padding-top: 2rem;
+    }
+
+    /* Hero title */
     .hero-title {
+        font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 2rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #635BFF 0%, #80E9FF 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #0A2540;
         margin-bottom: 0;
         line-height: 1.2;
+        letter-spacing: -0.02em;
     }
     .hero-subtitle {
-        color: #8892A6;
-        font-size: 0.95rem;
-        margin-top: 0.25rem;
-        margin-bottom: 1.5rem;
+        color: #425466;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        margin-bottom: 2rem;
+        line-height: 1.6;
     }
 
-    /* Sidebar branding */
+    /* Sidebar — clean light style */
+    section[data-testid="stSidebar"] {
+        background-color: #F6F9FC;
+        border-right: 1px solid #E3E8EE;
+    }
+    section[data-testid="stSidebar"] .stMarkdown p,
+    section[data-testid="stSidebar"] .stMarkdown span,
+    section[data-testid="stSidebar"] .stCaption {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
     .sidebar-brand {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
+        gap: 0.6rem;
+        margin-bottom: 0.4rem;
+    }
+    .sidebar-brand-icon {
+        width: 28px;
+        height: 28px;
+        background: #635BFF;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.85rem;
+        font-weight: 700;
+        flex-shrink: 0;
     }
     .sidebar-brand-text {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #635BFF, #80E9FF);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #0A2540;
+        letter-spacing: -0.01em;
     }
     .sidebar-badge {
         display: inline-block;
-        background: rgba(99, 91, 255, 0.15);
+        background: #F0EEFF;
         color: #635BFF;
-        border: 1px solid rgba(99, 91, 255, 0.3);
-        border-radius: 12px;
+        border-radius: 10px;
         padding: 0.15rem 0.5rem;
-        font-size: 0.65rem;
+        font-size: 0.6rem;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
-    /* Chat container improvements */
+    /* Chat messages */
     .stChatMessage {
-        border-radius: 12px;
+        border-radius: 10px;
         margin-bottom: 0.5rem;
     }
 
-    /* Suggested question cards */
-    .question-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-        margin: 1rem 0 2rem 0;
+    /* Suggested question buttons — styled as clean cards */
+    .stButton > button {
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        background: #FFFFFF !important;
+        color: #0A2540 !important;
+        border: 1px solid #E3E8EE !important;
+        border-radius: 10px !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 0.88rem !important;
+        font-weight: 500 !important;
+        text-align: left !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
     }
-    .question-card {
-        background: linear-gradient(135deg, rgba(99, 91, 255, 0.08), rgba(128, 233, 255, 0.05));
-        border: 1px solid rgba(99, 91, 255, 0.2);
-        border-radius: 12px;
-        padding: 1rem;
-        cursor: pointer;
-        transition: all 0.25s ease;
-        text-decoration: none;
+    .stButton > button:hover {
+        border-color: #635BFF !important;
+        box-shadow: 0 2px 8px rgba(99, 91, 255, 0.1) !important;
+        transform: translateY(-1px) !important;
     }
-    .question-card:hover {
-        border-color: #635BFF;
-        background: linear-gradient(135deg, rgba(99, 91, 255, 0.15), rgba(128, 233, 255, 0.08));
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(99, 91, 255, 0.15);
+    .stButton > button:active {
+        transform: translateY(0) !important;
     }
-    .question-card-icon {
-        font-size: 1.25rem;
-        margin-bottom: 0.5rem;
+
+    /* Sidebar buttons */
+    section[data-testid="stSidebar"] .stButton > button {
+        background: #FFFFFF !important;
+        border: 1px solid #E3E8EE !important;
+        color: #425466 !important;
     }
-    .question-card-text {
-        color: #E8E8E8;
-        font-size: 0.88rem;
-        line-height: 1.4;
+    section[data-testid="stSidebar"] .stButton > button:hover {
+        border-color: #635BFF !important;
+        color: #635BFF !important;
     }
 
     /* Source citation cards */
     .source-card {
-        background: linear-gradient(135deg, rgba(26, 39, 66, 0.8), rgba(26, 39, 66, 0.6));
-        border: 1px solid rgba(99, 91, 255, 0.15);
-        border-left: 3px solid #635BFF;
+        background: #FFFFFF;
+        border: 1px solid #E3E8EE;
         border-radius: 8px;
-        padding: 0.75rem 1rem;
-        margin-bottom: 0.5rem;
+        padding: 0.85rem 1rem;
+        margin-bottom: 0.6rem;
         transition: border-color 0.2s ease;
     }
     .source-card:hover {
-        border-left-color: #80E9FF;
+        border-color: #635BFF;
     }
     .source-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.15rem;
     }
     .source-title {
-        color: #635BFF;
+        color: #0A2540;
         font-weight: 600;
         font-size: 0.85rem;
     }
     .source-score {
-        background: rgba(99, 91, 255, 0.12);
-        color: #A8A3FF;
-        font-size: 0.7rem;
-        padding: 0.1rem 0.4rem;
+        background: #F0EEFF;
+        color: #635BFF;
+        font-size: 0.68rem;
+        padding: 0.12rem 0.45rem;
         border-radius: 8px;
-        font-weight: 500;
+        font-weight: 600;
     }
     .source-category {
-        color: #80E9FF;
-        font-size: 0.7rem;
-        font-weight: 500;
+        color: #635BFF;
+        font-size: 0.65rem;
+        font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.2rem;
     }
     .source-preview {
-        color: #8892A6;
+        color: #68778D;
         font-size: 0.78rem;
-        line-height: 1.5;
-        margin-top: 0.35rem;
+        line-height: 1.55;
+        margin-top: 0.3rem;
     }
 
     /* Response metadata */
     .response-meta {
         display: flex;
-        gap: 1rem;
-        color: #556;
+        gap: 0.75rem;
+        color: #8898AA;
         font-size: 0.72rem;
         margin-top: 0.75rem;
         padding-top: 0.5rem;
-        border-top: 1px solid rgba(99, 91, 255, 0.1);
+        border-top: 1px solid #E3E8EE;
     }
     .meta-item {
         display: flex;
@@ -175,8 +208,8 @@ st.markdown("""
         gap: 0.25rem;
     }
     .meta-dot {
-        width: 6px;
-        height: 6px;
+        width: 5px;
+        height: 5px;
         border-radius: 50%;
         background: #635BFF;
         display: inline-block;
@@ -185,66 +218,86 @@ st.markdown("""
     /* Tech stack pills in sidebar */
     .tech-pill {
         display: inline-block;
-        background: rgba(99, 91, 255, 0.1);
-        border: 1px solid rgba(99, 91, 255, 0.2);
-        border-radius: 16px;
-        padding: 0.2rem 0.6rem;
-        font-size: 0.72rem;
-        color: #A8A3FF;
-        margin: 0.15rem;
+        background: #FFFFFF;
+        border: 1px solid #E3E8EE;
+        border-radius: 14px;
+        padding: 0.18rem 0.55rem;
+        font-size: 0.68rem;
+        color: #425466;
+        margin: 0.12rem;
         font-weight: 500;
     }
 
-    /* How it works steps */
+    /* How it works steps in sidebar */
     .step-container {
         display: flex;
         align-items: flex-start;
-        gap: 0.75rem;
-        margin-bottom: 0.75rem;
+        gap: 0.65rem;
+        margin-bottom: 0.65rem;
     }
     .step-num {
-        background: linear-gradient(135deg, #635BFF, #80E9FF);
-        color: #0A1628;
-        width: 24px;
-        height: 24px;
+        background: #635BFF;
+        color: #FFFFFF;
+        width: 22px;
+        height: 22px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         font-weight: 700;
         flex-shrink: 0;
         margin-top: 2px;
     }
     .step-text {
-        color: #C0C8D8;
-        font-size: 0.82rem;
-        line-height: 1.4;
+        color: #425466;
+        font-size: 0.8rem;
+        line-height: 1.45;
     }
 
-    /* Empty state */
-    .empty-state {
-        text-align: center;
-        padding: 2rem 1rem;
+    /* Chat input area */
+    .stChatInput {
+        border-color: #E3E8EE;
     }
-    .empty-icon {
-        font-size: 3rem;
-        margin-bottom: 0.75rem;
+    .stChatInput > div {
+        border-color: #E3E8EE !important;
+        border-radius: 10px !important;
     }
 
-    /* Scrollbar styling */
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #425466;
+    }
+
+    /* Dividers */
+    hr {
+        border-color: #E3E8EE !important;
+    }
+
+    /* Links */
+    a {
+        color: #635BFF !important;
+        text-decoration: none !important;
+    }
+    a:hover {
+        color: #0A2540 !important;
+    }
+
+    /* Scrollbar — subtle */
     ::-webkit-scrollbar {
         width: 6px;
     }
     ::-webkit-scrollbar-track {
-        background: #0A1628;
+        background: #F6F9FC;
     }
     ::-webkit-scrollbar-thumb {
-        background: #2A3752;
+        background: #D8DEE6;
         border-radius: 3px;
     }
     ::-webkit-scrollbar-thumb:hover {
-        background: #635BFF;
+        background: #8898AA;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -259,7 +312,7 @@ if "messages" not in st.session_state:
 with st.sidebar:
     st.markdown("""
     <div class="sidebar-brand">
-        <span style="font-size: 1.5rem;">💳</span>
+        <div class="sidebar-brand-icon">S</div>
         <span class="sidebar-brand-text">Stripe Support AI</span>
     </div>
     <span class="sidebar-badge">RAG-Powered</span>
@@ -269,7 +322,7 @@ with st.sidebar:
 
     st.divider()
 
-    if st.button("🔄  New Conversation", use_container_width=True):
+    if st.button("New Conversation", use_container_width=True):
         st.session_state.messages = []
         st.rerun()
 
@@ -296,7 +349,7 @@ with st.sidebar:
 
     # Tech stack
     st.markdown("**Tech Stack**")
-    st.markdown(f"""
+    st.markdown("""
     <div style="margin: 0.5rem 0;">
         <span class="tech-pill">Groq</span>
         <span class="tech-pill">Llama 3.3 70B</span>
@@ -310,10 +363,10 @@ with st.sidebar:
     st.divider()
 
     st.markdown(
-        "[📂 View on GitHub](https://github.com/ronit111/stripe-support-agent)"
+        "[View on GitHub](https://github.com/ronit111/stripe-support-agent)"
     )
     st.markdown(
-        "[🏗️ How It Works →](How_It_Works)"
+        "[How It Works](How_It_Works)"
     )
 
 
@@ -328,7 +381,7 @@ st.markdown(
 
 def render_sources(sources: list[dict]):
     """Render source citation cards."""
-    with st.expander(f"📄 View Sources ({len(sources)} documents)"):
+    with st.expander(f"View Sources ({len(sources)} documents)"):
         for src in sources:
             preview = src["content"][:180].replace("\n", " ")
             st.markdown(f"""
@@ -381,23 +434,20 @@ def handle_question(question: str):
         except Exception as e:
             error_msg = str(e)
             if "rate" in error_msg.lower() or "limit" in error_msg.lower():
-                st.error("⏳ Rate limit reached. Please wait a moment and try again.")
+                st.error("Rate limit reached. Please wait a moment and try again.")
             elif "api" in error_msg.lower() or "key" in error_msg.lower():
-                st.error("🔑 LLM service unavailable. Check the API configuration.")
+                st.error("LLM service unavailable. Check the API configuration.")
             else:
                 st.error(f"Something went wrong: {error_msg}")
 
 
 # --- Suggested questions (shown when chat is empty) ---
 if not st.session_state.messages:
-    question_icons = ["💰", "⚡", "🔄", "🔔", "🔀", "🚨"]
-
-    st.markdown("#### Try asking:")
+    st.markdown("##### Try asking")
     cols = st.columns(2)
     for i, q in enumerate(SUGGESTED_QUESTIONS):
-        icon = question_icons[i] if i < len(question_icons) else "💬"
         with cols[i % 2]:
-            if st.button(f"{icon}  {q}", key=f"suggest_{i}", use_container_width=True):
+            if st.button(q, key=f"suggest_{i}", use_container_width=True):
                 handle_question(q)
                 st.rerun()
 
