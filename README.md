@@ -17,14 +17,14 @@ An AI-powered customer support assistant that answers questions about Stripe usi
 ```mermaid
 flowchart LR
     A["User Question"] --> B["Streamlit UI"]
-    B --> C["LangChain\nRAG Pipeline"]
-    C --> D["ChromaDB\n345 chunks"]
+    B --> C["LangChain<br>RAG Pipeline"]
+    C --> D["ChromaDB<br>345 chunks"]
     D -->|"Top 4 chunks"| C
-    C --> E["Groq API\nLlama 3.3 70B"]
+    C --> E["Groq API<br>Llama 3.3 70B"]
     E -->|"Streamed response"| B
-    B --> F["Response +\nSource Citations"]
+    B --> F["Response +<br>Source Citations"]
 
-    G["Stripe Docs\n25 pages"] -->|"Build step"| H["Chunking +\nEmbedding"]
+    G["Stripe Docs<br>25 pages"] -->|"Build step"| H["Chunking +<br>Embedding"]
     H -->|"all-MiniLM-L6-v2"| D
 
     style A fill:#635BFF,stroke:#635BFF,color:#fff
